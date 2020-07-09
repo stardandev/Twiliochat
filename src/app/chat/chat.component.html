@@ -1,0 +1,77 @@
+<div class="user_form" *ngIf="!userid">
+  <div class="student_list_popup" #group>
+    <div
+      *ngFor="let group of groupList"
+      (click)="onSelectGroup(group.id)"
+      [id]="group.id"
+    >
+      {{ group.name }}
+    </div>
+  </div>
+  <div>
+    <label>Username:</label><input type="text" [(ngModel)]="username" />
+  </div>
+  <div>
+    <label>UserId:</label><input type="text" [(ngModel)]="input_userid" />
+  </div>
+  <button (click)="onJoin()">Join</button>
+  <button (click)="onCreateGroup()">Create Group</button>
+</div>
+<div *ngIf="userid" class="chat">
+  <div class="students">
+    <a href="/">back</a>
+    <div
+      *ngFor="let student of students"
+      (click)="addCurrentStudent(student.id, student.name)"
+    >
+      {{ student.name }}
+    </div>
+  </div>
+  <div>
+    <div class="students_message">
+      <app-chat
+        *ngFor="let student of currentStudents.slice().reverse(); index as i"
+        [student]="student"
+        [currentuid]="currentuid"
+      ></app-chat>
+
+      <div class="students_list">
+        <div class="student_list_popup" *ngIf="isList">
+          <div
+            *ngFor="let student of inactiveStudents"
+            (click)="addCurrentStudent(student.id, student.name)"
+          >
+            {{ student.name }}
+          </div>
+        </div>
+        <div
+          class="student_list_icon"
+          (click)="showList()"
+          *ngIf="isListIcon"
+        ></div>
+      </div>
+    </div>
+    <div class="message">
+      <input
+        type="text"
+        placeholder="Type message here"
+        class="message_body"
+        [(ngModel)]="message"
+        (keydown.enter)="sendMessage()"
+        autofocus
+      />
+
+      <img src="/assets/link.png" class="" (click)="onLink()" />
+      <input type="file" class="hide" id="file" #fileUpload />
+      <div class="sendbutton" (click)="sendMessage()"></div>
+    </div>
+    <div class="upload_confirm" *ngIf="filename">
+      {{ filename }}
+      <img
+        class="upload_close"
+        src="/assets/multiple.png"
+        (click)="onCloseUpload()"
+      />
+    </div>
+  </div>
+</div>
